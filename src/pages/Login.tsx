@@ -11,31 +11,21 @@ export default function Login({ onLogin }: { onLogin: () => void }) {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setError("");
 
-    try {
-      const response = await fetch("/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
-      });
-
-      const data = await response.json();
-
-      if (data.success) {
+    // Cek langsung di sini tanpa panggil API
+    setTimeout(() => {
+      if (username === "admin" && password === "adminbisnis123") {
         localStorage.setItem("isLoggedIn", "true");
         onLogin();
       } else {
-        setError(data.message);
+        setError("Username atau password salah.");
       }
-    } catch (err) {
-      setError("Terjadi kesalahan koneksi.");
-    } finally {
       setIsLoading(false);
-    }
+    }, 1000); // Simulasi loading 1 detik
   };
 
   return (
